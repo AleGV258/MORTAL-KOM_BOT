@@ -9,7 +9,7 @@ MORTAL KOM_BOT: PHASE I
 */
 
 //Variables
-PImage dron, androide;
+PImage dron, androide, fondo;
 
 //Configuración Androide
 float xAndroide;
@@ -23,14 +23,15 @@ float velocidadDron = 15;
 //Iniciar el programa
 void setup(){
   //fullScreen(); //Pantalla completa, (esc) para salir
-  size(displayWidth, displayHeight); //Tamaño de la ventana, lienzo
+  size(1280, 800); //Tamaño de la ventana, lienzo
   //orientation(LANDSCAPE);  
   dron = loadImage("./images/DRON.png"); //Cargar la imagen del Dron
   androide = loadImage("./images/ANDROIDE.png"); //Cargar la imagen del Androide
+  fondo = loadImage("./images/background.jpg"); //Cargar la imagen del Fondo
 }
 
 void draw(){
-  background(0, 0, 0);
+  background(fondo);
 
   //Movimiento Androide
   if(direccionAndroide == true){
@@ -44,7 +45,7 @@ void draw(){
   if(xAndroide == 0){
     direccionAndroide = true;
   }
-  image(androide, xAndroide, 590, 130, 150);
+  image(androide, xAndroide, 560, 130, 150);
   //ellipse(xAndroide, 500, 20, 20);
   
   //Movimiento Dron
