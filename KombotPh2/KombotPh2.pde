@@ -20,6 +20,8 @@ float xAndroide; //Posición x del Androide
 float velocidadAndroide = 5; //Velocidad del Androide
 boolean direccionAndroide = true; //Saber hacía que dirección se mueve el Androide, true = derecha, false = izquierda
 
+float vidaAndroide = 5;
+
 //configuración Dron
 float xDron = displayWidth;
 float velocidadDron = 7;
@@ -72,7 +74,7 @@ void draw(){
   
   EL DRON VA A 5 FPS, LO PODEMOS HACER MAS RAPIDO O LENTO, YU DIME SI ASI SE VE BIEN O LO CAMBIO
   -------------------------------------------------------------------------------------------------------------------*/
-  
+  fill(0, 0, 0);
   image(fondo, xFondo1, 0);
   image(prueba, xFondo2, 0);
   xFondo1 = xFondo1 + 1; //Velocidad con la que se mueve la primera imágen del efecto Parallax del fondo
@@ -127,11 +129,35 @@ void draw(){
     
     //Verificacion de que el Proyectil sí intersecto a Androide
     if((proyectilX < xAndroide + 130 && proyectilX > xAndroide) && (proyectilY > 560 && proyectilY < 600)){
-      text("Disparo Exitoso", 100, 100);
-      textSize(40);
       llegoFinalProyectil = true; 
+      disparando = false;
+      vidaAndroide = vidaAndroide -1;
     }    
   }  
+  if(disparando == false && llegoFinalProyectil == true){
+    text("El ultimo proyectil intersecto al Androide", 300, 350);
+    textSize(40);    
+  }
+  
+  
+  String vida = "[";
+  for(int i=0; i<5; i++){
+    if(vidaAndroide > i){
+      vida = vida + "-";
+    }else{
+      vida = vida + " ";
+    }
+  }
+  vida = vida + "]";
+  text("Vida de androide: " + vida , 300, 500);
+    textSize(40); 
+    
+  if(vidaAndroide == 0){
+    text("El Androide a muerto", 300, 400);
+    textSize(40);  
+    //Aqui mostrar el boton de reiniciar
+  }
+  
 }
 
 
