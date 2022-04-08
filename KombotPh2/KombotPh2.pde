@@ -135,7 +135,7 @@ void draw(){
 }
 
 
-void mouseClicked() {
+void mousePressed() {
   if(mouseX < xDron + 400 && mouseX > xDron && mouseY > 30 && mouseY < 150 ){//Verifica que se este dando clic en el dron
     //Activar Proyectil de Dron
     contadorDron = 21; //Acceder a la animación de disparo
@@ -145,8 +145,5 @@ void mouseClicked() {
     proyectilY = 150; //Hacer que parezca debajo del dron
     proyectilX = xDron + 200; //Posición donde esta el dron en eje x + la mitad de ancho del dron para que el proyectil salga de enmedio
   } 
-  
-  //TEMPORALMENTE SE PUEDE CLIQUEAR EN TODA LA PANTALLA PARA QUE DISPARE EL DRON, PERO DEBE IR EN EL IF DE ARRIBA
-  // SOLO QUE A VECES SIENTO QUE NO FUNCIONA BIEN EL CLIC, NO SE SI TE PASA LO MISMO
   print("PROYECTIL: Se cliqueo en " + mouseX + " y " + mouseY +"\n");
 }
