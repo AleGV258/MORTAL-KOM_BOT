@@ -40,7 +40,8 @@ final float gravedad = 0.98; //Gravedad para el misil
 
 //Configuración del programa
 void settings() {
-   size(1280, 800); //Tamaño de la ventana, lienzo
+  //fullScreen(); //Pantalla completa
+  size(1280, 800); //Tamaño de la ventana, lienzo
 }
 
 //Iniciar el programa
@@ -126,6 +127,7 @@ void draw(){
     if(proyectilY > height){                    
       llegoFinalProyectil = true;                        
     }         
+    fill(255, 255, 255);
     ellipse(proyectilX, proyectilY, 20, 20); //Imagen del Proyectil
     
     //Verificación de que el Proyectil sí interceptó a Androide
@@ -138,7 +140,7 @@ void draw(){
   }
   
   //Avisar que el Dron golpeo al Androide
-  if(disparando == false && llegoFinalProyectil == true && entro < 30 && vidaAndroide > -1){
+  if(disparando == false && llegoFinalProyectil == true && entro < 50 && vidaAndroide > -1){
     fill(255, 0, 0); textSize(40); textFont(fuente1);
     text("El misil golpeó al Androide", 200, 340);
     entro = entro + 1;
