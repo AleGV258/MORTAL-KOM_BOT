@@ -41,6 +41,14 @@ float proyectilX; //Posición x del Proyectil
 float velocidad = 0; //Velocidad del Proyectil
 final float gravedad = 0.98; //Gravedad para el Proyectil
 
+//Configuración Proyectil de Androide
+boolean disparandoAndroide = false;
+boolean llegoFinalProyectilAndroide = false; 
+float proyectilAndroideY; 
+float proyectilAndroideX; 
+float velocidadProyectilAndroideX; 
+float velocidadProyectilAndroideY;
+boolean direccionDisparoAndroide = true;
 //Configuración del programa
 void settings() {
   //fullScreen(); //Pantalla completa
@@ -125,30 +133,7 @@ void draw(){
   if((contadorDron >= 5 && contadorDron < 10) || (contadorDron >= 15 && contadorDron < 20)){ image(dron2, xDron, -100, 400, 400); }
   if(contadorDron >= 0 && contadorDron < 5){ image(dron1, xDron, -100, 400, 400); }
   contadorDron = contadorDron + 1;
-  
-  //Proyectil Dron  
-  if(disparando){
-    //Verificar si el Proyectil aun se encuentra cayendo
-    if(llegoFinalProyectil == false){
-      velocidad = velocidad + gravedad;
-      proyectilY = proyectilY + velocidad; 
-      image(misil, proyectilX - 50, proyectilY - 30, 70, 70); //Imagen del Proyectil
-    }
-    //Verificar si el Proyectil llego al final del lienzo
-    if(proyectilY > height){                    
-      llegoFinalProyectil = true;    
-      clic = 0;
-    }
-    //Verificación de que el Proyectil sí interceptó a Androide
-    if((proyectilX < xAndroide + 170 && proyectilX > xAndroide + 90) && (proyectilY > 540 && proyectilY < 700)){
-      disparando = false;
-      llegoFinalProyectil = true;
-      explotando = true;
-      vidaAndroide = vidaAndroide -1;
-      entro = 0;
-      clic = 0;
-    }
-  }
+   
   
   //Renderizar frames de la Explosión
   if(contadorExplosion <= 20 && explotando == true){
@@ -184,6 +169,68 @@ void draw(){
     text("¡¡El Androide ha sido destruido!!", 140, 400);
     //Aquí mostrar el botón de reiniciar
   }
+  
+  //Proyectil Dron  
+  if(disparando){
+    //Verificar si el Proyectil aun se encuentra cayendo
+    if(llegoFinalProyectil == false){
+      velocidad = velocidad + gravedad;
+      proyectilY = proyectilY + velocidad; 
+      image(misil, proyectilX - 50, proyectilY - 30, 70, 70); //Imagen del Proyectil
+    }
+    //Verificar si el Proyectil llego al final del lienzo
+    if(proyectilY > height){                    
+      llegoFinalProyectil = true;    
+      clic = 0;
+    }
+    //Verificación de que el Proyectil sí interceptó a Androide
+    if((proyectilX < xAndroide + 170 && proyectilX > xAndroide + 90) && (proyectilY > 540 && proyectilY < 700)){
+      disparando = false;
+      llegoFinalProyectil = true;
+      explotando = true;
+      vidaAndroide = vidaAndroide -1;
+      entro = 0;
+      clic = 0;
+    }
+  }
+  
+  //Proyectil Androide  
+  if(disparandoAndroide){
+    if(llegoFinalProyectilAndroide == false){
+      
+      velocidadProyectilAndroideY = velocidadProyectilAndroideY - gravedad;     
+      if(velocidadProyectilAndroideX > 0){
+        velocidadProyectilAndroideX = velocidadProyectilAndroideX - 0.12;
+      }
+      
+      proyectilAndroideY = proyectilAndroideY - velocidadProyectilAndroideY ;
+      //print("X = " + proyectilAndroideX + "   Y = " + proyectilAndroideY + "\n");
+      if (direccionDisparoAndroide == true){ //Se tira a la derecha
+        proyectilAndroideX = proyectilAndroideX + velocidadProyectilAndroideX; 
+      }else{// Se tira a la izquierda   
+        proyectilAndroideX = proyectilAndroideX - velocidadProyectilAndroideX; 
+      }
+      
+      ellipse(proyectilAndroideX, proyectilAndroideY, 20, 20);
+      
+    }    
+    
+    if(proyectilAndroideY > height){        //El disparo sobrepasa el borde de ventana         
+      llegoFinalProyectilAndroide = true;    
+    }
+    
+    //Verificación de que el Proyectil sí interceptó a Dron
+    if((proyectilAndroideX < xDron + 400 && proyectilAndroideX > xDron) && (proyectilAndroideY > 30 && proyectilAndroideY < 150)){
+      disparandoAndroide = false;
+      llegoFinalProyectilAndroide = true;   
+      fill(255, 0, 0); textSize(40); textFont(fuente1);
+      text("¡¡El Disparo intersecto a Dron!!", 200, 340);
+    }
+    
+  }
+  
+  
+  
 }
 
 void mousePressed() {
@@ -199,5 +246,20 @@ void mousePressed() {
   }else{
     contadorDron = 21; //Acceder a la animación de disparo
   }
-  print("PROYECTIL: Se cliqueó en X: " + mouseX + " - Y: " + mouseY +"\n");
+  
+  
+  if(mouseX < xAndroide + 260 && mouseX > xAndroide && mouseY > 480 && mouseY < 740){//Verifica que se esté dando clic en el Androide
+    disparandoAndroide = true;
+    llegoFinalProyectilAndroide = false; 
+    proyectilAndroideY = 615; 
+    proyectilAndroideX= xAndroide + 140;
+    velocidadProyectilAndroideX = 15; 
+    velocidadProyectilAndroideY = 35;     
+    if(direccionAndroide== true){//se tira a la derecha
+      direccionDisparoAndroide = true;
+    }else{// Se tira a la izquierda   
+      direccionDisparoAndroide = false;
+    }
+  }
+  print("Se cliqueó en X: " + mouseX + " - Y: " + mouseY +"\n");
 }
