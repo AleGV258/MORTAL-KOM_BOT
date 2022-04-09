@@ -9,7 +9,8 @@ MORTAL KOM_BOT: PHASE II
 */
 
 //Variables
-PImage dron1, dron2, dron3, dron4, dron5, androide, fondo, prueba; //Variables de Imágenes //BORRAR
+PImage dron1, dron2, dron3, dron4, dron5, androide1, androide2, androide3, androide4, androide5, androide6, androide7, corazon, fondo; //Variables de Imágenes
+PFont fuente1, fuente2; //Variables de las fuentes
 
 //Configuración Fondo
 int xFondo1 = 0; //Fondo NO. 1 para formar el efecto Parallax
@@ -19,86 +20,86 @@ int xFondo2 = -1280; //Fondo NO. 2 para formar el efecto Parallax
 float xAndroide; //Posición x del Androide
 float velocidadAndroide = 5; //Velocidad del Androide
 boolean direccionAndroide = true; //Saber hacía que dirección se mueve el Androide, true = derecha, false = izquierda
-
-float vidaAndroide = 5;
+int vidaAndroide = 5; //Vida del Androide
+int contadorAndroide = 0; //Contador para renderizar frames del Androide
+String vida; //Variable de la vida del Androide
 
 //configuración Dron
-float xDron = displayWidth;
-float velocidadDron = 7;
-int contadorDron = 0;
+float xDron = displayWidth; //Posición x del Dron
+float velocidadDron = 7; ////Velocidad del Dron
+int contadorDron = 0; //Contador para renderizar frames del Dron
 
 //Configuración Proyectil de Dron
-boolean disparando = false;
-float proyectilY;
-float proyectilX;
-float velocidad = 0;
-boolean llegoFinalProyectil = false;
-final float gravedad = 0.98;
+boolean disparando = false; //Variable para saber si el Dron ha disparado
+boolean llegoFinalProyectil = false; //Variable para saber si el misil llego al final
+int entro = 0; //Variable para dejar un rato los mensajes
+float proyectilY; //Posición y del misil
+float proyectilX; //Posición x del misil
+float velocidad = 0; //Velocidad del misil
+final float gravedad = 0.98; //Gravedad para el misil
 
+//Configuración del programa
 void settings() {
    size(1280, 800); //Tamaño de la ventana, lienzo
-   //size(1280, 800); //Tamaño de la ventana, lienzo
-   //fullScreen(); //Pantalla completa, (esc) para salir
 }
+
 //Iniciar el programa
 void setup(){
-  
-  //orientation(LANDSCAPE); //Otras configuraciones de pantalla
   dron1 = loadImage("./images/Dron_Movimiento1.png"); //Cargar un frame del Dron
   dron2 = loadImage("./images/Dron_Movimiento2.png"); //Cargar un frame del Dron
   dron3 = loadImage("./images/Dron_Movimiento3.png"); //Cargar un frame del Dron
   dron4 = loadImage("./images/Dron_Ataca.png"); //Cargar un frame del Dron cuando va a atacar
   dron5 = loadImage("./images/Dron_Disparo.png"); //Cargar un frame del Dron cuando dispara
-  androide = loadImage("./images/ANDROIDE.png"); //Cargar la imagen del Androide
-  fondo = loadImage("./images/bg/2.jpg"); //Cargar la imagen del Fondo
-  prueba = loadImage("./images/bg/1.jpg"); //BORRAR
+  androide1 = loadImage("./images/Androide_Movimiento1.png"); //Cargar la imagen del Androide
+  androide2 = loadImage("./images/Androide_Movimiento2.png"); //Cargar la imagen del Androide
+  androide3 = loadImage("./images/Androide_Movimiento3.png"); //Cargar la imagen del Androide
+  androide4 = loadImage("./images/Androide_Movimiento4.png"); //Cargar la imagen del Androide
+  androide5 = loadImage("./images/Androide_Movimiento5.png"); //Cargar la imagen del Androide
+  androide6 = loadImage("./images/Androide_Movimiento6.png"); //Cargar la imagen del Androide
+  androide7 = loadImage("./images/Androide_Muerte.png"); //Cargar la imagen del Androide cuando muere
+  fondo = loadImage("./images/Background1.jpg"); //Cargar la imagen del Fondo
   fondo.resize(1280, 800); //Redimensionar cualquier fondo a la escala del lienzo
+  corazon = loadImage("./images/Corazon.png"); //Cargar la imagen del Corazón
+  fuente1 = createFont("./fonts/Avalors.otf", 40); //Cargar la fuente de los misilazos
+  fuente2 = createFont("./fonts/Dead.otf", 20); //Cargar la fuente de las vidas
 }
 
 void draw(){
-  
-  /* ------------------------------------------------------------NOTAS:---------------------------------------------
-  HAY DOS FONDOS DIFERENTES PARA QUE PUEDAS VER LA PROGRESIÓN (CUANDO PONGAMOS SOLO UNO, SE VE MUY FLUIDO), 
-  LA IDEA ES DEJAR SOLO UNO, QUITAR EL QUE DICE PRUEBA Y A FONDO2 PONERLE "fondo", 
-  HAY 15 FONDOS, SELECCIONA 1, A MI ME GUSTAN EL 2, 9, 10, 14, IGUAL SI ENCUENTRAS OTRO MEJOR, PONLO  
-  
-  
-  YA NO SE PUDE MODIFICAR EL WIDTH NI HEIGTH DEL LIENZO, NI DEL DRON, YA QUE SE DESACOMODA TODO Y HAY QUE VOLVER A HACER CALCULOS DE TODO Y ES MEDIO TARDADO JAJA
-  
-  
-  YO VEO SIEMPRE, CORRECTAMENTE LA ANIMACIÓN DEL DISPARO, NO SE CORTA NI SE TRABA, Y CADA CLIC HACE BIEN LA ANIMACIÓN DEL DISPARO
-  
-  
-  PUSE TODO LO DEL DISPARO DENTRO DE SU IF, SI QUIERES HACER PRUEBAS, SACALO, PERO LO RECOMENDABLE ES QUE YA SE QUEDE AHI XD
-  
-  
-  EL DRON VA A 5 FPS, LO PODEMOS HACER MAS RAPIDO O LENTO, YU DIME SI ASI SE VE BIEN O LO CAMBIO
-  -------------------------------------------------------------------------------------------------------------------*/
-  fill(0, 0, 0);
   image(fondo, xFondo1, 0);
-  image(prueba, xFondo2, 0);
-  xFondo1 = xFondo1 + 1; //Velocidad con la que se mueve la primera imágen del efecto Parallax del fondo
-  if(xFondo1 == 1280){ //Cuando llega al borde de la pantalla se reestablece la posición
+  image(fondo, xFondo2, 0);
+  xFondo1 = xFondo1 + 1; //Velocidad con la que se mueve la primera imagen del efecto Parallax del fondo
+  if(xFondo1 == 1280){ //Cuando llega al borde de la pantalla se restablece la posición
     xFondo1 = -1280;
   }
-  xFondo2 = xFondo2 + 1; //Velocidad con la que se mueve la segunda imágen del efecto Parallax del fondo
-  if(xFondo2 == 1280){ //Cuando llega al borde de la pantalla se reestablece la posición
+  xFondo2 = xFondo2 + 1; //Velocidad con la que se mueve la segunda imagen del efecto Parallax del fondo
+  if(xFondo2 == 1280){ //Cuando llega al borde de la pantalla se restablece la posición
     xFondo2 = -1280;
   }
 
   //Movimiento de la dirección del Androide
-  if(direccionAndroide == true){ //Hacía la derecha
+  //xAndroide = 40; //quitar, es solo para pruebas
+  if(direccionAndroide == true){ //Hacia la derecha
     xAndroide = xAndroide + velocidadAndroide;
-  }else{ //Hacía la izquierda
+  }else{ //Hacia la izquierda
     xAndroide = xAndroide - velocidadAndroide;
   }
-  if(xAndroide >= width){ //Cambio de dirección
+  if(xAndroide == 1150){ //Cambio de dirección
     direccionAndroide = false;
   }
-  if(xAndroide == 0){ //Cambio de dirección
+  if(xAndroide == -130){ //Cambio de dirección
     direccionAndroide = true;
   }
-  image(androide, xAndroide, 560, 130, 150);
+  
+  //Renderizar por frames al Androide
+  if(contadorAndroide == 21){ image(androide7, xAndroide, 480, 260, 260); velocidadAndroide = 0;}
+  if(contadorAndroide == 20){ contadorAndroide = 0; }
+  if((contadorAndroide >= 10 && contadorAndroide < 15) && direccionAndroide == true){ image(androide3, xAndroide, 480, 260, 260); }
+  if((contadorAndroide >= 10 && contadorAndroide < 15) && direccionAndroide == false){ image(androide6, xAndroide, 480, 260, 260); }
+  if(((contadorAndroide >= 5 && contadorAndroide < 10) || (contadorAndroide >= 15 && contadorAndroide < 20)) && direccionAndroide == true){ image(androide2, xAndroide, 480, 260, 260); }
+  if(((contadorAndroide >= 5 && contadorAndroide < 10) || (contadorAndroide >= 15 && contadorAndroide < 20)) && direccionAndroide == false){ image(androide5, xAndroide, 480, 260, 260); }
+  if((contadorAndroide >= 0 && contadorAndroide < 5) && direccionAndroide == true){ image(androide1, xAndroide, 480, 260, 260); }
+  if((contadorAndroide >= 0 && contadorAndroide < 5) && direccionAndroide == false){ image(androide4, xAndroide, 480, 260, 260); }
+  contadorAndroide = contadorAndroide + 1;
   
   //Movimiento del Dron
   xDron = xDron - velocidadDron;
@@ -109,10 +110,10 @@ void draw(){
   //Renderizar por frames al Dron
   if(contadorDron == 40){ contadorDron = 0; }
   if(contadorDron >= 25 && contadorDron < 35){ image(dron5, xDron, -100, 400, 400); }
-  if(contadorDron >= 21 && contadorDron < 25 || contadorDron >= 35 && contadorDron < 40 ){ image(dron4, xDron, -100, 400, 400); }
+  if((contadorDron >= 21 && contadorDron < 25) || (contadorDron >= 35 && contadorDron < 40)){ image(dron4, xDron, -100, 400, 400); }
   if(contadorDron == 20){ contadorDron = 0; }
   if(contadorDron >= 10 && contadorDron < 15){ image(dron3, xDron, -96, 400, 400); }
-  if(contadorDron >= 5 && contadorDron < 10 || contadorDron >= 15 && contadorDron < 20 ){ image(dron2, xDron, -100, 400, 400); }
+  if((contadorDron >= 5 && contadorDron < 10) || (contadorDron >= 15 && contadorDron < 20)){ image(dron2, xDron, -100, 400, 400); }
   if(contadorDron >= 0 && contadorDron < 5){ image(dron1, xDron, -100, 400, 400); }
   contadorDron = contadorDron + 1;
   
@@ -125,51 +126,50 @@ void draw(){
     if(proyectilY > height){                    
       llegoFinalProyectil = true;                        
     }         
-    ellipse(proyectilX, proyectilY, 20, 20); //Imagen de Proyectil
+    ellipse(proyectilX, proyectilY, 20, 20); //Imagen del Proyectil
     
-    //Verificacion de que el Proyectil sí intersecto a Androide
-    if((proyectilX < xAndroide + 130 && proyectilX > xAndroide) && (proyectilY > 560 && proyectilY < 600)){
-      llegoFinalProyectil = true; 
+    //Verificación de que el Proyectil sí interceptó a Androide
+    if((proyectilX < xAndroide + 170 && proyectilX > xAndroide + 90) && (proyectilY > 540 && proyectilY < 700)){
       disparando = false;
+      llegoFinalProyectil = true;
+      entro = 0;
       vidaAndroide = vidaAndroide -1;
-    }    
-  }  
-  if(disparando == false && llegoFinalProyectil == true){
-    text("El ultimo proyectil intersecto al Androide", 300, 350);
-    textSize(40);    
-  }
-  
-  
-  String vida = "[";
-  for(int i=0; i<5; i++){
-    if(vidaAndroide > i){
-      vida = vida + "-";
-    }else{
-      vida = vida + " ";
     }
   }
-  vida = vida + "]";
-  text("Vida de androide: " + vida , 300, 500);
-    textSize(40); 
-    
-  if(vidaAndroide == 0){
-    text("El Androide a muerto", 300, 400);
-    textSize(40);  
-    //Aqui mostrar el boton de reiniciar
+  
+  //Avisar que el Dron golpeo al Androide
+  if(disparando == false && llegoFinalProyectil == true && entro < 30 && vidaAndroide > -1){
+    fill(255, 0, 0); textSize(40); textFont(fuente1);
+    text("El misil golpeó al Androide", 200, 340);
+    entro = entro + 1;
   }
   
+  //Generar y escribir el mensaje de vida de las vidas del Androide
+  if(vidaAndroide > -1){
+      vida = "          x" + vidaAndroide;
+  }
+  fill(255, 255, 255); textSize(20); textFont(fuente2);
+  text("Vida del Androide: " + vida, 25, 735);
+  image(corazon, 180, 680, 100, 100); //Imagen del corazón
+  
+  //Matar al Androide y mostrar mensaje de muerte
+  if(vidaAndroide == 0){
+    contadorAndroide = 21;
+    fill(255, 0, 0); textSize(40); textFont(fuente1);
+    text("¡¡El Androide ha sido destruido!!", 140, 400);
+    //Aquí mostrar el botón de reiniciar
+  }
 }
 
-
 void mousePressed() {
-  if(mouseX < xDron + 400 && mouseX > xDron && mouseY > 30 && mouseY < 150 ){//Verifica que se este dando clic en el dron
-    //Activar Proyectil de Dron
+  //Activar Proyectil de Dron
+  if(mouseX < xDron + 400 && mouseX > xDron && mouseY > 30 && mouseY < 150 ){//Verifica que se esté dando clic en el dron
     contadorDron = 21; //Acceder a la animación de disparo
     velocidad = 0;  
     disparando = true;
     llegoFinalProyectil = false; 
     proyectilY = 150; //Hacer que parezca debajo del dron
-    proyectilX = xDron + 200; //Posición donde esta el dron en eje x + la mitad de ancho del dron para que el proyectil salga de enmedio
+    proyectilX = xDron + 200; //Posición donde está el dron en eje x + la mitad de ancho del dron para que el proyectil salga de en medio
   } 
-  print("PROYECTIL: Se cliqueo en " + mouseX + " y " + mouseY +"\n");
+  print("PROYECTIL: Se cliqueó en X: " + mouseX + " - Y: " + mouseY +"\n");
 }
