@@ -9,7 +9,7 @@ MORTAL KOM_BOT: PHASE II
 */
 
 //Variables
-PImage dron1, dron2, dron3, dron4, dron5, androide1, androide2, androide3, androide4, androide5, androide6, androide7, corazon, fondo; //Variables de Imágenes
+PImage dron1, dron2, dron3, dron4, dron5, androide1, androide2, androide3, androide4, androide5, androide6, androide7, explosion1, explosion2, explosion3, explosion4, misil, corazon, fondo; //Variables de Imágenes
 PFont fuente1, fuente2; //Variables de las fuentes
 
 //Configuración Fondo
@@ -25,18 +25,21 @@ int contadorAndroide = 0; //Contador para renderizar frames del Androide
 String vida; //Variable de la vida del Androide
 
 //configuración Dron
-float xDron = displayWidth; //Posición x del Dron
+float xDron = 1080; //Posición x del Dron
 float velocidadDron = 7; ////Velocidad del Dron
 int contadorDron = 0; //Contador para renderizar frames del Dron
 
 //Configuración Proyectil de Dron
 boolean disparando = false; //Variable para saber si el Dron ha disparado
-boolean llegoFinalProyectil = false; //Variable para saber si el misil llego al final
+boolean llegoFinalProyectil = false; //Variable para saber si el Proyectil llego al final
+boolean explotando = false; //Variable para conocer si el misil sigue explotando
 int entro = 0; //Variable para dejar un rato los mensajes
-float proyectilY; //Posición y del misil
-float proyectilX; //Posición x del misil
-float velocidad = 0; //Velocidad del misil
-final float gravedad = 0.98; //Gravedad para el misil
+int clic = 0; //Variable para saber si el Proyectil sigue cayendo
+int contadorExplosion = 0; //Contador para renderizar frames de la Explosión
+float proyectilY; //Posición y del Proyectil
+float proyectilX; //Posición x del Proyectil
+float velocidad = 0; //Velocidad del Proyectil
+final float gravedad = 0.98; //Gravedad para el Proyectil
 
 //Configuración del programa
 void settings() {
@@ -46,6 +49,12 @@ void settings() {
 
 //Iniciar el programa
 void setup(){
+  corazon = loadImage("./images/Corazon.png"); //Cargar la imagen del Corazón
+  misil = loadImage("./images/Misil.png"); //Cargar la imagen del Misil
+  explosion1 = loadImage("./images/Explosion1.png"); //Cargar un frame de la Explosión
+  explosion2 = loadImage("./images/Explosion2.png"); //Cargar un frame de la Explosión
+  explosion3 = loadImage("./images/Explosion3.png"); //Cargar un frame de la Explosión
+  explosion4 = loadImage("./images/Explosion4.png"); //Cargar un frame de la Explosión
   dron1 = loadImage("./images/Dron_Movimiento1.png"); //Cargar un frame del Dron
   dron2 = loadImage("./images/Dron_Movimiento2.png"); //Cargar un frame del Dron
   dron3 = loadImage("./images/Dron_Movimiento3.png"); //Cargar un frame del Dron
@@ -60,7 +69,6 @@ void setup(){
   androide7 = loadImage("./images/Androide_Muerte.png"); //Cargar la imagen del Androide cuando muere
   fondo = loadImage("./images/Background1.jpg"); //Cargar la imagen del Fondo
   fondo.resize(1280, 800); //Redimensionar cualquier fondo a la escala del lienzo
-  corazon = loadImage("./images/Corazon.png"); //Cargar la imagen del Corazón
   fuente1 = createFont("./fonts/Avalors.otf", 40); //Cargar la fuente de los misilazos
   fuente2 = createFont("./fonts/Dead.otf", 20); //Cargar la fuente de las vidas
 }
@@ -120,23 +128,38 @@ void draw(){
   
   //Proyectil Dron  
   if(disparando){
+    //Verificar si el Proyectil aun se encuentra cayendo
     if(llegoFinalProyectil == false){
       velocidad = velocidad + gravedad;
       proyectilY = proyectilY + velocidad; 
-    }         
+      image(misil, proyectilX - 50, proyectilY - 30, 70, 70); //Imagen del Proyectil
+    }
+    //Verificar si el Proyectil llego al final del lienzo
     if(proyectilY > height){                    
-      llegoFinalProyectil = true;                        
-    }         
-    fill(255, 255, 255);
-    ellipse(proyectilX, proyectilY, 20, 20); //Imagen del Proyectil
-    
+      llegoFinalProyectil = true;    
+      clic = 0;
+    }
     //Verificación de que el Proyectil sí interceptó a Androide
     if((proyectilX < xAndroide + 170 && proyectilX > xAndroide + 90) && (proyectilY > 540 && proyectilY < 700)){
       disparando = false;
       llegoFinalProyectil = true;
-      entro = 0;
+      explotando = true;
       vidaAndroide = vidaAndroide -1;
+      entro = 0;
+      clic = 0;
     }
+  }
+  
+  //Renderizar frames de la Explosión
+  if(contadorExplosion <= 20 && explotando == true){
+    if(contadorExplosion >= 15 && contadorExplosion < 20){ image(explosion4, xAndroide + 80, 570, 100, 100); }
+    if(contadorExplosion >= 10 && contadorExplosion < 15){ image(explosion3, xAndroide + 80, 570, 100, 100); }
+    if(contadorExplosion >= 5 && contadorExplosion < 10){ image(explosion2, xAndroide + 80, 570, 100, 100); }
+    if(contadorExplosion >= 0 && contadorExplosion < 5){ image(explosion1, xAndroide + 80, 570, 100, 100); }
+    contadorExplosion = contadorExplosion + 1;
+  }else{
+    explotando = false;
+    contadorExplosion = 0;
   }
   
   //Avisar que el Dron golpeo al Androide
@@ -165,13 +188,16 @@ void draw(){
 
 void mousePressed() {
   //Activar Proyectil de Dron
-  if(mouseX < xDron + 400 && mouseX > xDron && mouseY > 30 && mouseY < 150 ){//Verifica que se esté dando clic en el dron
+  if(mouseX < xDron + 400 && mouseX > xDron && mouseY > 30 && mouseY < 150 && clic == 0){//Verifica que se esté dando clic en el dron
     contadorDron = 21; //Acceder a la animación de disparo
     velocidad = 0;  
+    clic = clic + 1;
     disparando = true;
     llegoFinalProyectil = false; 
     proyectilY = 150; //Hacer que parezca debajo del dron
     proyectilX = xDron + 200; //Posición donde está el dron en eje x + la mitad de ancho del dron para que el proyectil salga de en medio
-  } 
+  }else{
+    contadorDron = 21; //Acceder a la animación de disparo
+  }
   print("PROYECTIL: Se cliqueó en X: " + mouseX + " - Y: " + mouseY +"\n");
 }
