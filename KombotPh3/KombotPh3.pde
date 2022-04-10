@@ -47,7 +47,7 @@ int entroDron = 0; //Variable para dejar un rato los mensajes
 boolean disparandoAndroide = false; //Variable para saber si el Androide ha disparado
 boolean llegoFinalProyectilAndroide = false; //Variable para saber si el Proyectil llego al final
 boolean explotandoDron = false; //Variable para conocer si el Dron sigue explotando
-boolean direccionDisparoAndroide = true;
+boolean direccionDisparoAndroide = true; //Variable para saber la dirección del disparo del Androide
 float proyectilAndroideY; //Posición y del Proyectil
 float proyectilAndroideX; //Posición x del Proyectil
 float velocidadProyectilAndroideX; //Velocidad en x del Proyectil
@@ -119,7 +119,7 @@ void draw(){
   }
 
   //Renderizar por frames al Dron
-  if(contadorDron == 41){ image(dron6, xDron, yDron, 400, 400); velocidadDron = 0;}
+  if(contadorDron == 41){ image(dron6, xDron, yDron, 400, 400); velocidadDron = 0; }
   if(contadorDron == 40){ contadorDron = 0; }
   if(contadorDron >= 25 && contadorDron < 35){ image(dron5, xDron, -100, 400, 400); }
   if((contadorDron >= 21 && contadorDron < 25) || (contadorDron >= 35 && contadorDron < 40)){ image(dron4, xDron, -100, 400, 400); }
@@ -143,7 +143,7 @@ void draw(){
   }
   
   //Renderizar por frames al Androide
-  if(contadorAndroide == 26){ image(androide7, xAndroide, 480, 260, 260); velocidadAndroide = 0;}
+  if(contadorAndroide == 26){ image(androide7, xAndroide, 480, 260, 260); velocidadAndroide = 0; }
   if(contadorAndroide == 25){ contadorAndroide = 5; }
   if((contadorAndroide >= 21 && contadorAndroide < 25) && direccionAndroide == true){ image(androide8, xAndroide, 480, 260, 260); }
   if((contadorAndroide >= 21 && contadorAndroide < 25) && direccionAndroide == false){ image(androide9, xAndroide, 480, 260, 260); }
@@ -161,7 +161,7 @@ void draw(){
   //square(proyectilDronX-50,proyectilDronY-30,2);square(proyectilDronX-50+70,proyectilDronY-30,2);square(proyectilDronX-50,proyectilDronY-30+70,2);square(proyectilDronX-50+70,proyectilDronY-30+70,2);
   //Proyectil Dron  
   if(disparandoDron){
-    //Verificar si el Proyectil aun se encuentra cayendo
+    //Verificar si el Proyectil aún se encuentra cayendo
     if(llegoFinalProyectilDron == false){
       velocidad = velocidad + gravedad;
       proyectilDronY = proyectilDronY + velocidad; 
@@ -188,7 +188,7 @@ void draw(){
   //square(proyectilAndroideX,proyectilAndroideY,2);square(proyectilAndroideX+50,proyectilAndroideY,2);square(proyectilAndroideX,proyectilAndroideY+50,2);square(proyectilAndroideX+50,proyectilAndroideY+50,2);
   //Proyectil Androide  
   if(disparandoAndroide){
-    //Verificar si el Proyectil aun se encuentra lanzandose
+    //Verificar si el Proyectil aún se encuentra lanzandose
     if(llegoFinalProyectilAndroide == false){
       velocidadProyectilAndroideY = velocidadProyectilAndroideY - gravedad;   
       proyectilAndroideY = proyectilAndroideY - velocidadProyectilAndroideY ;
@@ -318,8 +318,8 @@ void mousePressed() {
     disparandoAndroide = true;
     llegoFinalProyectilAndroide = false; 
     clicAndroide = clicAndroide + 1;
-    proyectilAndroideY = 615; 
-    proyectilAndroideX = xAndroide + 140;
+    proyectilAndroideY = 605; 
+    proyectilAndroideX = xAndroide + 100;
     velocidadProyectilAndroideX = 13; 
     velocidadProyectilAndroideY = 33;     
     if(direccionAndroide== true){//se tira a la derecha
@@ -328,7 +328,7 @@ void mousePressed() {
       direccionDisparoAndroide = false;
     }
   }else{
-    if(mouseX < xAndroide + 260 && mouseX > xAndroide && mouseY > 480 && mouseY < 740 && clicAndroide != 0 && vidaDron != 26){//Verifica que se esté dando clic en el dron
+    if(mouseX < xAndroide + 260 && mouseX > xAndroide && mouseY > 480 && mouseY < 740 && clicAndroide != 0 && contadorAndroide != 26){//Verifica que se esté dando clic en el dron
       contadorAndroide = 21; //Acceder a la animación de disparo
     }
   }
