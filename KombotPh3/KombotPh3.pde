@@ -9,7 +9,7 @@ MORTAL KOM_BOT: PHASE II
 */
 
 //Variables
-PImage dron1, dron2, dron3, dron4, dron5, dron6, androide1, androide2, androide3, androide4, androide5, androide6, androide7, androide8, androide9, explosion1, explosion2, explosion3, explosion4, bola1, bola2, bola3, bola4, misil, corazon, procesador, fondo; //Variables de Imágenes
+PImage dron1, dron2, dron3, dron4, dron5, dron6, androide1, androide2, androide3, androide4, androide5, androide6, androide7, androide8, androide9, explosion1, explosion2, explosion3, explosion4, bola1, bola2, bola3, bola4, misil, corazon, procesador, fondo, reset; //Variables de Imágenes
 PFont fuente1, fuente2; //Variables de las fuentes
 
 //Configuración Fondo
@@ -21,7 +21,7 @@ String vida1; //Variable de la vida del Androide
 boolean direccionAndroide = true; //Saber hacía que dirección se mueve el Androide, true = derecha, false = izquierda
 float xAndroide; //Posición x del Androide
 float velocidadAndroide = 5; //Velocidad del Androide
-int vidaAndroide = 3; //Vidas del Androide
+int vidaAndroide = 1; //Vidas del Androide
 int contadorAndroide = 0; //Contador para renderizar frames del Androide
 
 //configuración Dron
@@ -29,7 +29,7 @@ String vida2; //Variable de la vida del Dron
 float yDron = -50; //Posición y del Dron
 float xDron = 1080; //Posición x del Dron
 float velocidadDron = 7; ////Velocidad del Dron
-int vidaDron = 5; //Vidas del Dron
+int vidaDron = 1; //Vidas del Dron
 int contadorDron = 0; //Contador para renderizar frames del Dron
 
 //Configuración Proyectil de Dron
@@ -98,6 +98,7 @@ void setup(){
   fondo.resize(1280, 800); //Redimensionar cualquier fondo a la escala del lienzo
   fuente1 = createFont("./fonts/Avalors.otf", 40); //Cargar la fuente de los misilazos
   fuente2 = createFont("./fonts/Dead.otf", 20); //Cargar la fuente de las vidas
+  reset = loadImage("./images/reset.png"); //Cargar imagen reset
 }
 
 void draw(){
@@ -294,6 +295,14 @@ void draw(){
     text("¡¡El Dron ha sido destruido!!", 196, 400);
     //Aquí mostrar el botón de reiniciar
   }
+  
+  
+  //Menu reiniciar
+  if(vidaDron == 0 || vidaAndroide == 0){
+    fill(255, 0, 0); textSize(40); textFont(fuente1);
+    image(reset, 440, 460, 400, 150);  
+  }
+  
 }
 
 void mousePressed() {
@@ -333,4 +342,20 @@ void mousePressed() {
     }
   }
   //print("Se cliqueó en X: " + mouseX + " - Y: " + mouseY +"\n");
+  
+  //Menu reiniciar
+  if(vidaDron == 0 || vidaAndroide == 0){
+    //configuración Androide
+    vida1 = "";
+    vidaAndroide = 1;
+    contadorAndroide = 0; //Contador para renderizar frames del Androide
+    velocidadAndroide = 5;
+    
+    //configuración Dron
+    vida2 = "";
+    velocidadDron = 7; ////Velocidad del Dron
+    vidaDron = 1; //Vidas del Dron
+    contadorDron = 0; //Contador para renderizar frames del Dron  
+   
+  }
 }
