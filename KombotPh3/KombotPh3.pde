@@ -62,8 +62,8 @@ final float gravedad = 0.98; //Gravedad para los Proyectiles
 
 //Configuración del programa
 void settings() {
-  fullScreen(); //Pantalla completa
-  //size(1280, 800); //Tamaño de la ventana, lienzo
+  //fullScreen(); //Pantalla completa
+  size(1280, 800); //Tamaño de la ventana, lienzo
 }
 
 //Iniciar el programa
