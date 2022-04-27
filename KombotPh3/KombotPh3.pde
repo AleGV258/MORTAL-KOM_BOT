@@ -21,7 +21,7 @@ String vida1; //Variable de la vida del Androide
 boolean direccionAndroide = true; //Saber hacía que dirección se mueve el Androide, true = derecha, false = izquierda
 float xAndroide; //Posición x del Androide
 float velocidadAndroide = 5; //Velocidad del Androide
-int vidaAndroide = 1; //Vidas del Androide
+int vidaAndroide = 3; //Vidas del Androide
 int contadorAndroide = 0; //Contador para renderizar frames del Androide
 
 //configuración Dron
@@ -29,7 +29,7 @@ String vida2; //Variable de la vida del Dron
 float yDron = -50; //Posición y del Dron
 float xDron = 1080; //Posición x del Dron
 float velocidadDron = 7; ////Velocidad del Dron
-int vidaDron = 1; //Vidas del Dron
+int vidaDron = 3; //Vidas del Dron
 int contadorDron = 0; //Contador para renderizar frames del Dron
 
 //Configuración Proyectil de Dron
@@ -62,43 +62,44 @@ final float gravedad = 0.98; //Gravedad para los Proyectiles
 
 //Configuración del programa
 void settings() {
-  //fullScreen(); //Pantalla completa
-  size(1280, 800); //Tamaño de la ventana, lienzo
+  fullScreen(); //Pantalla completa
+  //size(1280, 800); //Tamaño de la ventana, lienzo
 }
 
 //Iniciar el programa
 void setup(){
-  corazon = loadImage("./images/Corazon.png"); //Cargar la imagen del Corazón
-  procesador = loadImage("./images/Procesador.png"); //Cargar la imagen del Procesador
-  misil = loadImage("./images/Misil.png"); //Cargar la imagen del Misil
-  explosion1 = loadImage("./images/Explosion1.png"); //Cargar un frame de la Explosión
-  explosion2 = loadImage("./images/Explosion2.png"); //Cargar un frame de la Explosión
-  explosion3 = loadImage("./images/Explosion3.png"); //Cargar un frame de la Explosión
-  explosion4 = loadImage("./images/Explosion4.png"); //Cargar un frame de la Explosión
-  bola1 = loadImage("./images/Bola1.png"); //Cargar un frame de la Bola de Energía
-  bola2 = loadImage("./images/Bola2.png"); //Cargar un frame de la Bola de Energía
-  bola3 = loadImage("./images/Bola3.png"); //Cargar un frame de la Bola de Energía
-  bola4 = loadImage("./images/Bola4.png"); //Cargar un frame de la Bola de Energía
-  dron1 = loadImage("./images/Dron_Movimiento1.png"); //Cargar un frame del Dron
-  dron2 = loadImage("./images/Dron_Movimiento2.png"); //Cargar un frame del Dron
-  dron3 = loadImage("./images/Dron_Movimiento3.png"); //Cargar un frame del Dron
-  dron4 = loadImage("./images/Dron_Ataca.png"); //Cargar un frame del Dron cuando va a atacar
-  dron5 = loadImage("./images/Dron_Disparo.png"); //Cargar un frame del Dron cuando dispara
-  dron6 = loadImage("./images/Dron_Muerte.png"); //Cargar un frame del Dron cuando muere
-  androide1 = loadImage("./images/Androide_Movimiento1.png"); //Cargar la imagen del Androide
-  androide2 = loadImage("./images/Androide_Movimiento2.png"); //Cargar la imagen del Androide
-  androide3 = loadImage("./images/Androide_Movimiento3.png"); //Cargar la imagen del Androide
-  androide4 = loadImage("./images/Androide_Movimiento4.png"); //Cargar la imagen del Androide
-  androide5 = loadImage("./images/Androide_Movimiento5.png"); //Cargar la imagen del Androide
-  androide6 = loadImage("./images/Androide_Movimiento6.png"); //Cargar la imagen del Androide
-  androide7 = loadImage("./images/Androide_Muerte.png"); //Cargar la imagen del Androide cuando muere
-  androide8 = loadImage("./images/Androide_Disparo1.png"); //Cargar la imagen del Androide cuando dispara
-  androide9 = loadImage("./images/Androide_Disparo2.png"); //Cargar la imagen del Androide cuando dispara
-  fondo = loadImage("./images/Background1.jpg"); //Cargar la imagen del Fondo
+  orientation(LANDSCAPE);
+  corazon = loadImage("Corazon.png"); //Cargar la imagen del Corazón
+  procesador = loadImage("Procesador.png"); //Cargar la imagen del Procesador
+  misil = loadImage("Misil.png"); //Cargar la imagen del Misil
+  explosion1 = loadImage("Explosion1.png"); //Cargar un frame de la Explosión
+  explosion2 = loadImage("Explosion2.png"); //Cargar un frame de la Explosión
+  explosion3 = loadImage("Explosion3.png"); //Cargar un frame de la Explosión
+  explosion4 = loadImage("Explosion4.png"); //Cargar un frame de la Explosión
+  bola1 = loadImage("Bola1.png"); //Cargar un frame de la Bola de Energía
+  bola2 = loadImage("Bola2.png"); //Cargar un frame de la Bola de Energía
+  bola3 = loadImage("Bola3.png"); //Cargar un frame de la Bola de Energía
+  bola4 = loadImage("Bola4.png"); //Cargar un frame de la Bola de Energía
+  dron1 = loadImage("Dron_Movimiento1.png"); //Cargar un frame del Dron
+  dron2 = loadImage("Dron_Movimiento2.png"); //Cargar un frame del Dron
+  dron3 = loadImage("Dron_Movimiento3.png"); //Cargar un frame del Dron
+  dron4 = loadImage("Dron_Ataca.png"); //Cargar un frame del Dron cuando va a atacar
+  dron5 = loadImage("Dron_Disparo.png"); //Cargar un frame del Dron cuando dispara
+  dron6 = loadImage("Dron_Muerte.png"); //Cargar un frame del Dron cuando muere
+  androide1 = loadImage("Androide_Movimiento1.png"); //Cargar la imagen del Androide
+  androide2 = loadImage("Androide_Movimiento2.png"); //Cargar la imagen del Androide
+  androide3 = loadImage("Androide_Movimiento3.png"); //Cargar la imagen del Androide
+  androide4 = loadImage("Androide_Movimiento4.png"); //Cargar la imagen del Androide
+  androide5 = loadImage("Androide_Movimiento5.png"); //Cargar la imagen del Androide
+  androide6 = loadImage("Androide_Movimiento6.png"); //Cargar la imagen del Androide
+  androide7 = loadImage("Androide_Muerte.png"); //Cargar la imagen del Androide cuando muere
+  androide8 = loadImage("Androide_Disparo1.png"); //Cargar la imagen del Androide cuando dispara
+  androide9 = loadImage("Androide_Disparo2.png"); //Cargar la imagen del Androide cuando dispara
+  fondo = loadImage("Background1.jpg"); //Cargar la imagen del Fondo
   fondo.resize(1280, 800); //Redimensionar cualquier fondo a la escala del lienzo
-  fuente1 = createFont("./fonts/Avalors.otf", 40); //Cargar la fuente de los misilazos
-  fuente2 = createFont("./fonts/Dead.otf", 20); //Cargar la fuente de las vidas
-  reset = loadImage("./images/reset.png"); //Cargar imagen reset
+  fuente1 = createFont("Avalors.otf", 40); //Cargar la fuente de los misilazos
+  fuente2 = createFont("Dead.otf", 20); //Cargar la fuente de las vidas
+  reset = loadImage("reset.png"); //Cargar imagen reset
 }
 
 void draw(){
@@ -347,14 +348,14 @@ void mousePressed() {
   if(vidaDron == 0 || vidaAndroide == 0){
     //configuración Androide
     vida1 = "";
-    vidaAndroide = 1;
+    vidaAndroide = 3;
     contadorAndroide = 0; //Contador para renderizar frames del Androide
     velocidadAndroide = 5;
     
     //configuración Dron
     vida2 = "";
     velocidadDron = 7; ////Velocidad del Dron
-    vidaDron = 1; //Vidas del Dron
+    vidaDron = 3; //Vidas del Dron
     contadorDron = 0; //Contador para renderizar frames del Dron  
    
   }
