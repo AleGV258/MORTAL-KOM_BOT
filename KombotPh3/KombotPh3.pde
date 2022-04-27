@@ -302,6 +302,7 @@ void draw(){
   if(vidaDron == 0 || vidaAndroide == 0){
     fill(255, 0, 0); textSize(40); textFont(fuente1);
     image(reset, 440, 460, 400, 150);  
+    
   }
   
 }
@@ -345,7 +346,7 @@ void mousePressed() {
   //print("Se cliqueó en X: " + mouseX + " - Y: " + mouseY +"\n");
   
   //Menu reiniciar
-  if(vidaDron == 0 || vidaAndroide == 0){
+  if(mouseX < 440 + 400 && mouseX > 440 && mouseY > 460 && mouseY < 460 + 150 && vidaDron == 0 || vidaAndroide == 0){
     //configuración Androide
     vida1 = "";
     vidaAndroide = 3;
